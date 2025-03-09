@@ -93,6 +93,11 @@
     
     main {
       padding: 2rem 0;
+      display: none;
+    }
+    
+    main.active {
+      display: block;
     }
     
     .page-title {
@@ -200,6 +205,7 @@
       font-weight: 500;
       cursor: pointer;
       transition: transform 0.1s;
+      background-color: var(--gray-100);
     }
     
     .calendar-day:hover {
@@ -214,10 +220,6 @@
     .calendar-day.today {
       border: 2px solid var(--primary);
       font-weight: 700;
-    }
-    
-    .calendar-day.empty {
-      background-color: var(--gray-100);
     }
     
     .habit-footer {
@@ -395,6 +397,22 @@
       font-size: 0.875rem;
       color: var(--gray-500);
       margin-top: 0.25rem;
+    }
+    
+    .stats-grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+    
+    .stats-item {
+      padding: 1rem;
+      background-color: var(--gray-100);
+      border-radius: var(--radius);
+    }
+    
+    .settings-form {
+      display: grid;
+      gap: 1.5rem;
     }
     
     @media (max-width: 768px) {
@@ -580,15 +598,16 @@
           Momentum
         </a>
         <div class="nav-links">
-          <a href="#" class="nav-link active">Dashboard</a>
-          <a href="#" class="nav-link">Stats</a>
-          <a href="#" class="nav-link">Settings</a>
+          <a href="#" class="nav-link active" data-page="dashboard">Dashboard</a>
+          <a href="#" class="nav-link" data-page="stats">Stats</a>
+          <a href="#" class="nav-link" data-page="settings">Settings</a>
         </div>
       </nav>
     </div>
   </header>
-  
-  <main class="container slide-in">
+
+  <!-- Dashboard Page -->
+  <main id="dashboard" class="container slide-in active">
     <h1 class="page-title">My Habits</h1>
     
     <div class="habits-grid" id="habitsGrid">
@@ -617,7 +636,45 @@
       </div>
     </div>
   </main>
-  
+
+  <!-- Stats Page -->
+  <main id="stats" class="container slide-in">
+    <h1 class="page-title">Statistics</h1>
+    <div class="stats-grid" id="statsGrid"></div>
+  </main>
+
+  <!-- Settings Page -->
+  <main id="settings" class="container slide-in">
+    <h1 class="page-title">Settings</h1>
+    <div class="card">
+      <h2 class="card-title">Preferences</h2>
+      <form id="settingsForm" class="settings-form">
+        <div class="form-group">
+          <label for="theme" class="form-label">Theme</label>
+          <select id="theme" class="form-select">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="notifications" class="form-label">Notifications</label>
+          <select id="notifications" class="form-select">
+            <option value="on">On</option>
+            <option value="off">Off</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Save Settings</button>
+        </div>
+      </form>
+    </div>
+    <div class="card">
+      <h2 class="card-title">Data</h2>
+      <button id="clearData" class="btn btn-danger">Clear All Data</button>
+    </div>
+  </main>
+
+  <!-- Add Habit Modal -->
   <div class="modal-backdrop" id="addHabitModal">
     <div class="modal">
       <div class="modal-header">
@@ -681,8 +738,15 @@
     // State management
     let habits = JSON.parse(localStorage.getItem('habits')) || [];
     let activities = JSON.parse(localStorage.getItem('activities')) || [];
+    let settings = JSON.parse(localStorage.getItem('settings')) || { theme: 'light', notifications: 'on' };
 
     // DOM Elements
+    const pages = {
+      dashboard: document.getElementById('dashboard'),
+      stats: document.getElementById('stats'),
+      settings: document.getElementById('settings')
+    };
+    const navLinks = document.querySelectorAll('.nav-link');
     const habitsGrid = document.getElementById('habitsGrid');
     const activityList = document.getElementById('activityList');
     const addHabitBtn = document.getElementById('addHabitBtn');
@@ -692,11 +756,15 @@
     const habitForm = document.getElementById('habitForm');
     const weeklyProgress = document.getElementById('weeklyProgress');
     const monthlyProgress = document.getElementById('monthlyProgress');
+    const statsGrid = document.getElementById('statsGrid');
+    const settingsForm = document.getElementById('settingsForm');
+    const clearDataBtn = document.getElementById('clearData');
 
     // Helper functions
     function saveData() {
       localStorage.setItem('habits', JSON.stringify(habits));
       localStorage.setItem('activities', JSON.stringify(activities));
+      localStorage.setItem('settings', JSON.stringify(settings));
     }
 
     function getCurrentMonthDays() {
@@ -706,7 +774,6 @@
 
     function generateCalendar(habit) {
       const today = new Date();
-      const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
       const daysInMonth = getCurrentMonthDays();
       let calendar = '';
 
@@ -720,7 +787,7 @@
         if (isCompleted) classes += ' completed';
         if (isToday) classes += ' today';
         
-        calendar += `<div class="${classes}">${i}</div>`;
+        calendar += `<div class="${classes}" data-date="${dateString}" data-habit-id="${habit.id}">${i}</div>`;
       }
       return calendar;
     }
@@ -860,28 +927,41 @@
 
       let weeklyCompletions = 0;
       let monthlyCompletions = 0;
-      let weeklyPossible = 0;
-      let monthlyPossible = 0;
 
       habits.forEach(habit => {
         Object.keys(habit.completions).forEach(date => {
           const d = new Date(date);
-          if (d >= weekStart) {
-            weeklyCompletions++;
-            weeklyPossible++;
-          }
-          if (d >= monthStart) {
-            monthlyCompletions++;
-            monthlyPossible++;
-          }
+          if (d >= weekStart) weeklyCompletions++;
+          if (d >= monthStart) monthlyCompletions++;
         });
       });
 
-      const weeklyPercentage = weeklyPossible ? Math.round((weeklyCompletions / (habits.length * 7)) * 100) : 0;
-      const monthlyPercentage = monthlyPossible ? Math.round((monthlyCompletions / (habits.length * getCurrentMonthDays())) * 100) : 0;
+      const weeklyPercentage = habits.length ? Math.min(100, Math.round((weeklyCompletions / (habits.length * 7)) * 100)) : 0;
+      const monthlyPercentage = habits.length ? Math.min(100, Math.round((monthlyCompletions / (habits.length * getCurrentMonthDays())) * 100)) : 0;
 
       renderProgress(weeklyProgress, weeklyPercentage, 'Completed');
       renderProgress(monthlyProgress, monthlyPercentage, 'Achieved');
+    }
+
+    function renderStats() {
+      statsGrid.innerHTML = habits.map(habit => {
+        const { successRate, totalDays } = calculateStats(habit);
+        const streak = calculateStreak(habit);
+        return `
+          <div class="stats-item">
+            <h3>${habit.name}</h3>
+            <p>Current Streak: ${streak} days</p>
+            <p>Total Completions: ${totalDays}</p>
+            <p>Success Rate: ${successRate}%</p>
+            <p>Frequency: ${habit.frequency}</p>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderSettings() {
+      document.getElementById('theme').value = settings.theme;
+      document.getElementById('notifications').value = settings.notifications;
     }
 
     // Event handlers
@@ -910,19 +990,38 @@
           timestamp: new Date()
         });
         
-        button.disabled = true;
-        button.innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-          Done!
-        `;
-        
         saveData();
         renderHabits();
         renderActivities();
         updateProgress();
+        renderStats();
       }
+    }
+
+    function handleCalendarClick(e) {
+      const day = e.target.closest('.calendar-day');
+      if (!day) return;
+
+      const habitId = day.dataset.habitId;
+      const date = day.dataset.date;
+      const habit = habits.find(h => h.id === Number(habitId));
+
+      if (habit.completions[date]) {
+        delete habit.completions[date];
+      } else {
+        habit.completions[date] = true;
+        activities.unshift({
+          type: 'completed',
+          habit: habit.name,
+          timestamp: new Date(date)
+        });
+      }
+
+      saveData();
+      renderHabits();
+      renderActivities();
+      updateProgress();
+      renderStats();
     }
 
     function handleMenu(e) {
@@ -935,10 +1034,28 @@
         saveData();
         renderHabits();
         updateProgress();
+        renderStats();
       }
     }
 
+    function switchPage(pageName) {
+      Object.values(pages).forEach(page => page.classList.remove('active'));
+      pages[pageName].classList.add('active');
+      navLinks.forEach(link => link.classList.remove('active'));
+      document.querySelector(`[data-page="${pageName}"]`).classList.add('active');
+
+      if (pageName === 'stats') renderStats();
+      if (pageName === 'settings') renderSettings();
+    }
+
     // Event listeners
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        switchPage(link.dataset.page);
+      });
+    });
+
     addHabitBtn.addEventListener('click', showModal);
     closeModal.addEventListener('click', hideModal);
     cancelAddHabit.addEventListener('click', hideModal);
@@ -949,6 +1066,7 @@
     habitsGrid.addEventListener('click', (e) => {
       handleCheck(e);
       handleMenu(e);
+      handleCalendarClick(e);
     });
 
     habitForm.addEventListener('submit', (e) => {
@@ -972,13 +1090,38 @@
       renderHabits();
       renderActivities();
       updateProgress();
+      renderStats();
       hideModal();
+    });
+
+    settingsForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      settings.theme = document.getElementById('theme').value;
+      settings.notifications = document.getElementById('notifications').value;
+      saveData();
+      alert('Settings saved!');
+    });
+
+    clearDataBtn.addEventListener('click', () => {
+      if (confirm('Are you sure you want to clear all data?')) {
+        habits = [];
+        activities = [];
+        settings = { theme: 'light', notifications: 'on' };
+        saveData();
+        renderHabits();
+        renderActivities();
+        updateProgress();
+        renderStats();
+        renderSettings();
+      }
     });
 
     // Initial render
     renderHabits();
     renderActivities();
     updateProgress();
+    renderStats();
+    renderSettings();
 
     // Add default habits if none exist
     if (!habits.length) {
@@ -992,6 +1135,7 @@
       renderHabits();
       renderActivities();
       updateProgress();
+      renderStats();
     }
   </script>
 </body>
