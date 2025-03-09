@@ -1124,12 +1124,12 @@
     renderSettings();
 
     // Add default habits if none exist
-    if (!habits.length) {
-      const defaultHabits = [
-        new Habit('Morning Meditation', 'daily', '07:00', 'primary'),
-        new Habit('Read 30 Minutes', 'daily', '21:00', 'primary'),
-        new Habit('Exercise', 'daily', '18:00', 'primary')
-      ];
+    //if (!habits.length) {
+      //const defaultHabits = [
+       // new Habit('Morning Meditation', 'daily', '07:00', 'primary'),
+       // new Habit('Read 30 Minutes', 'daily', '21:00', 'primary'),
+       // new Habit('Exercise', 'daily', '18:00', 'primary')
+     // ];
       habits = defaultHabits;
       saveData();
       renderHabits();
