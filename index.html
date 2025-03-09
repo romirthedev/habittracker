@@ -22,7 +22,8 @@
       --gray-700: #374151;
       --gray-800: #1f2937;
       --gray-900: #111827;
-      --radius: 8px;
+      --radius: 12px;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
     
     * {
@@ -33,54 +34,60 @@
     }
     
     body {
-      background-color: var(--gray-50);
+      background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
       color: var(--gray-800);
-      line-height: 1.5;
+      line-height: 1.6;
+      min-height: 100vh;
     }
     
     .container {
-      max-width: 1200px;
+      max-width: 1280px;
       margin: 0 auto;
-      padding: 0 1rem;
+      padding: 0 1.5rem;
     }
     
     header {
-      background-color: white;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      background: white;
+      box-shadow: var(--shadow);
       position: sticky;
       top: 0;
       z-index: 10;
+      border-bottom: 1px solid var(--gray-100);
     }
     
     nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 0;
+      padding: 1.25rem 0;
     }
     
     .logo {
       display: flex;
       align-items: center;
-      font-weight: 700;
-      font-size: 1.5rem;
+      font-weight: 800;
+      font-size: 1.75rem;
       color: var(--primary);
+      letter-spacing: -0.025em;
     }
     
     .logo svg {
-      margin-right: 8px;
+      margin-right: 0.75rem;
+      color: var(--primary-dark);
     }
     
     .nav-links {
       display: flex;
-      gap: 2rem;
+      gap: 2.5rem;
     }
     
     .nav-link {
       color: var(--gray-600);
       text-decoration: none;
-      font-weight: 500;
-      transition: color 0.2s;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      position: relative;
     }
     
     .nav-link:hover {
@@ -91,8 +98,19 @@
       color: var(--primary);
     }
     
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+    
     main {
-      padding: 2rem 0;
+      padding: 3rem 0;
       display: none;
     }
     
@@ -101,51 +119,63 @@
     }
     
     .page-title {
-      margin-bottom: 2rem;
-      font-size: 2rem;
-      font-weight: 700;
+      margin-bottom: 2.5rem;
+      font-size: 2.5rem;
+      font-weight: 800;
       color: var(--gray-900);
+      letter-spacing: -0.025em;
     }
     
     .card {
-      background-color: white;
+      background: white;
       border-radius: var(--radius);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      transition: transform 0.3s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-2px);
     }
     
     .card-title {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
       color: var(--gray-900);
     }
     
     .habits-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 2rem;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2.5rem;
     }
     
     .habit-card {
       display: flex;
       flex-direction: column;
-      background-color: white;
+      background: white;
       border-radius: var(--radius);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      box-shadow: var(--shadow);
       overflow: hidden;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: all 0.3s ease;
+      position: relative;
     }
     
+    .habit-card.success { border: 3px solid var(--success); }
+    .habit-card.warning { border: 3px solid var(--warning); }
+    .habit-card.danger { border: 3px solid var(--danger); }
+    .habit-card.primary { border: 3px solid var(--primary); }
+    
     .habit-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     }
     
     .habit-header {
-      padding: 1.25rem;
+      padding: 1.5rem;
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
@@ -156,20 +186,22 @@
     }
     
     .habit-name {
-      font-weight: 600;
-      font-size: 1.125rem;
-      margin-bottom: 0.5rem;
+      font-weight: 700;
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+      color: var(--gray-900);
     }
     
     .habit-streak {
       display: flex;
       align-items: center;
-      font-size: 0.875rem;
+      font-size: 0.9rem;
       color: var(--gray-600);
+      font-weight: 500;
     }
     
     .habit-streak svg {
-      margin-right: 4px;
+      margin-right: 0.5rem;
       color: var(--warning);
     }
     
@@ -178,42 +210,46 @@
       border: none;
       cursor: pointer;
       color: var(--gray-400);
-      transition: color 0.2s;
+      padding: 0.5rem;
+      transition: all 0.3s ease;
     }
     
     .habit-menu:hover {
       color: var(--gray-600);
+      background: var(--gray-100);
+      border-radius: 6px;
     }
     
     .habit-calendar {
-      padding: 0 1.25rem 1.25rem;
+      padding: 0 1.5rem 1.5rem;
     }
     
     .calendar-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 4px;
+      gap: 6px;
     }
     
     .calendar-day {
       aspect-ratio: 1;
-      border-radius: 4px;
+      border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.75rem;
+      font-size: 0.85rem;
       font-weight: 500;
       cursor: pointer;
-      transition: transform 0.1s;
-      background-color: var(--gray-100);
+      transition: all 0.2s ease;
+      background: var(--gray-100);
     }
     
     .calendar-day:hover {
-      transform: scale(1.05);
+      transform: scale(1.1);
+      background: var(--gray-200);
     }
     
     .calendar-day.completed {
-      background-color: var(--primary-light);
+      background: var(--primary-light);
       color: white;
     }
     
@@ -223,15 +259,17 @@
     }
     
     .habit-footer {
-      padding: 1rem 1.25rem;
+      padding: 1.25rem 1.5rem;
       border-top: 1px solid var(--gray-100);
       display: flex;
       justify-content: space-between;
+      align-items: center;
+      background: var(--gray-50);
     }
     
     .habit-stats {
       display: flex;
-      gap: 1rem;
+      gap: 1.5rem;
     }
     
     .habit-stat {
@@ -242,72 +280,83 @@
     
     .stat-value {
       font-weight: 700;
-      font-size: 1.125rem;
+      font-size: 1.25rem;
       color: var(--gray-900);
     }
     
     .stat-label {
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
     
     .check-button {
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      background-color: var(--primary);
+      background: var(--primary);
       color: white;
       border: none;
-      border-radius: var(--radius);
-      padding: 0.5rem 1rem;
-      font-weight: 500;
+      border-radius: 8px;
+      padding: 0.75rem 1.25rem;
+      font-weight: 600;
       cursor: pointer;
-      transition: background-color 0.2s;
+      transition: all 0.3s ease;
     }
     
     .check-button:hover {
-      background-color: var(--primary-dark);
+      background: var(--primary-dark);
+      transform: translateY(-1px);
     }
     
     .check-button:disabled {
-      background-color: var(--success);
+      background: var(--success);
       cursor: default;
+      transform: none;
     }
     
     .add-habit {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem;
-      background-color: white;
+      gap: 0.75rem;
+      background: white;
       color: var(--primary);
-      border: 2px dashed var(--gray-200);
+      border: 3px dashed var(--gray-200);
       border-radius: var(--radius);
-      padding: 2rem;
-      font-weight: 500;
+      padding: 2.5rem;
+      font-weight: 600;
+      font-size: 1.1rem;
       cursor: pointer;
-      transition: border-color 0.2s, color 0.2s;
+      transition: all 0.3s ease;
       height: 100%;
     }
     
     .add-habit:hover {
       border-color: var(--primary-light);
       color: var(--primary-dark);
+      background: var(--gray-50);
     }
     
     .recent-activity {
-      margin-top: 2rem;
+      margin-top: 2.5rem;
     }
     
     .activity-list {
-      margin-top: 1rem;
+      margin-top: 1.5rem;
     }
     
     .activity-item {
       display: flex;
       align-items: center;
-      padding: 0.75rem 0;
+      padding: 1rem 0;
       border-bottom: 1px solid var(--gray-100);
+      transition: background 0.2s ease;
+    }
+    
+    .activity-item:hover {
+      background: var(--gray-50);
     }
     
     .activity-item:last-child {
@@ -315,15 +364,16 @@
     }
     
     .activity-icon {
-      width: 32px;
-      height: 32px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
-      background-color: var(--primary-light);
+      background: var(--primary-light);
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-right: 1rem;
+      margin-right: 1.25rem;
       color: white;
+      flex-shrink: 0;
     }
     
     .activity-content {
@@ -331,32 +381,33 @@
     }
     
     .activity-title {
-      font-weight: 500;
+      font-weight: 600;
       margin-bottom: 0.25rem;
+      color: var(--gray-800);
     }
     
     .activity-time {
-      font-size: 0.75rem;
+      font-size: 0.85rem;
       color: var(--gray-500);
     }
     
     .charts-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
     }
     
     .progress-chart {
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 200px;
+      height: 240px;
     }
     
     .progress-chart-container {
       position: relative;
-      width: 160px;
-      height: 160px;
+      width: 180px;
+      height: 180px;
     }
     
     .progress-circle {
@@ -367,13 +418,13 @@
     .progress-background {
       fill: none;
       stroke: var(--gray-200);
-      stroke-width: 12;
+      stroke-width: 14;
     }
     
     .progress-value {
       fill: none;
       stroke: var(--primary);
-      stroke-width: 12;
+      stroke-width: 14;
       stroke-linecap: round;
       transition: stroke-dashoffset 0.5s ease;
     }
@@ -387,27 +438,106 @@
     }
     
     .progress-percentage {
-      font-size: 2rem;
-      font-weight: 700;
+      font-size: 2.25rem;
+      font-weight: 800;
       color: var(--gray-900);
       line-height: 1;
     }
     
     .progress-label {
-      font-size: 0.875rem;
+      font-size: 1rem;
       color: var(--gray-500);
-      margin-top: 0.25rem;
+      margin-top: 0.5rem;
+      font-weight: 500;
     }
     
     .stats-grid {
       display: grid;
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
     }
     
-    .stats-item {
-      padding: 1rem;
-      background-color: var(--gray-100);
+    .stats-card {
+      background: white;
       border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      transition: all 0.3s ease;
+    }
+    
+    .stats-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .stats-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .stats-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--gray-900);
+    }
+    
+    .stats-metric {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .stats-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      background: var(--primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      flex-shrink: 0;
+    }
+    
+    .stats-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--gray-900);
+    }
+    
+    .stats-label {
+      font-size: 0.9rem;
+      color: var(--gray-600);
+      font-weight: 500;
+    }
+    
+    .settings-container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .settings-card {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .settings-section {
+      margin-bottom: 2.5rem;
+    }
+    
+    .settings-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid var(--gray-100);
+      padding-bottom: 0.5rem;
     }
     
     .settings-form {
@@ -415,9 +545,19 @@
       gap: 1.5rem;
     }
     
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+      margin-top: 2rem;
+    }
+    
     @media (max-width: 768px) {
-      .charts-container {
+      .charts-container, .stats-grid {
         grid-template-columns: 1fr;
+      }
+      .page-title {
+        font-size: 2rem;
       }
     }
 
@@ -445,14 +585,14 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.6);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 100;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.2s;
+      transition: opacity 0.3s ease;
     }
 
     .modal-backdrop.active {
@@ -461,15 +601,15 @@
     }
 
     .modal {
-      background-color: white;
+      background: white;
       border-radius: var(--radius);
       width: 90%;
-      max-width: 500px;
-      padding: 1.5rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      max-width: 550px;
+      padding: 2rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
       transform: translateY(20px);
       opacity: 0;
-      transition: transform 0.3s, opacity 0.3s;
+      transition: all 0.3s ease;
     }
 
     .modal-backdrop.active .modal {
@@ -481,12 +621,13 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
     }
 
     .modal-title {
-      font-size: 1.25rem;
-      font-weight: 600;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--gray-900);
     }
 
     .modal-close {
@@ -494,57 +635,50 @@
       border: none;
       cursor: pointer;
       color: var(--gray-400);
-      transition: color 0.2s;
+      padding: 0.5rem;
+      transition: all 0.3s ease;
     }
 
     .modal-close:hover {
       color: var(--gray-600);
+      background: var(--gray-100);
+      border-radius: 6px;
     }
 
     .form-group {
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.5rem;
     }
 
     .form-label {
       display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
+      margin-bottom: 0.75rem;
+      font-weight: 600;
       color: var(--gray-700);
+      font-size: 0.95rem;
     }
 
-    .form-input {
+    .form-input, .form-select {
       width: 100%;
-      padding: 0.75rem;
+      padding: 0.9rem 1rem;
       border: 1px solid var(--gray-300);
-      border-radius: var(--radius);
-      transition: border-color 0.2s;
+      border-radius: 8px;
+      transition: all 0.3s ease;
       font-size: 1rem;
+      background: white;
     }
 
-    .form-input:focus {
+    .form-input:focus, .form-select:focus {
       outline: none;
       border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
     }
 
     .form-select {
-      width: 100%;
-      padding: 0.75rem;
-      border: 1px solid var(--gray-300);
-      border-radius: var(--radius);
-      transition: border-color 0.2s;
-      font-size: 1rem;
       appearance: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M4.646 6.646a.5.5 0 0 1 .708 0L8 9.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
-      background-position: right 0.75rem center;
+      background-position: right 1rem center;
       background-size: 16px 12px;
-    }
-
-    .form-select:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
     }
 
     .form-actions {
@@ -555,33 +689,42 @@
     }
 
     .btn {
-      padding: 0.75rem 1.5rem;
-      border-radius: var(--radius);
-      font-weight: 500;
+      padding: 0.9rem 1.75rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
       cursor: pointer;
-      transition: background-color 0.2s, border-color 0.2s;
+      transition: all 0.3s ease;
+      border: none;
     }
 
     .btn-secondary {
-      background-color: white;
-      border: 1px solid var(--gray-300);
+      background: var(--gray-100);
       color: var(--gray-700);
     }
 
     .btn-secondary:hover {
-      background-color: var(--gray-50);
-      border-color: var(--gray-400);
+      background: var(--gray-200);
     }
 
     .btn-primary {
-      background-color: var(--primary);
-      border: 1px solid var(--primary);
+      background: var(--primary);
       color: white;
     }
 
     .btn-primary:hover {
-      background-color: var(--primary-dark);
-      border-color: var(--primary-dark);
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #dc2626;
+      transform: translateY(-1px);
     }
   </style>
 </head>
@@ -590,7 +733,7 @@
     <div class="container">
       <nav>
         <a href="#" class="logo">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 2L2 7l10 5 10-5-10-5z"/>
             <path d="M2 17l10 5 10-5"/>
             <path d="M2 12l10 5 10-5"/>
@@ -609,22 +752,19 @@
   <!-- Dashboard Page -->
   <main id="dashboard" class="container slide-in active">
     <h1 class="page-title">My Habits</h1>
-    
     <div class="habits-grid" id="habitsGrid">
       <button class="add-habit fade-in" id="addHabitBtn" style="animation-delay: 0.3s">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="12" y1="5" x2="12" y2="19"/>
           <line x1="5" y1="12" x2="19" y2="12"/>
         </svg>
         Add Habit
       </button>
     </div>
-    
     <div class="card recent-activity">
       <h2 class="card-title">Recent Activity</h2>
       <div class="activity-list" id="activityList"></div>
     </div>
-    
     <div class="charts-container">
       <div class="card">
         <h2 class="card-title">Weekly Progress</h2>
@@ -646,41 +786,48 @@
   <!-- Settings Page -->
   <main id="settings" class="container slide-in">
     <h1 class="page-title">Settings</h1>
-    <div class="card">
-      <h2 class="card-title">Preferences</h2>
-      <form id="settingsForm" class="settings-form">
-        <div class="form-group">
-          <label for="theme" class="form-label">Theme</label>
-          <select id="theme" class="form-select">
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
-          </select>
+    <div class="settings-container">
+      <div class="settings-card">
+        <div class="settings-section">
+          <h2 class="settings-title">Appearance</h2>
+          <div class="form-group">
+            <label for="theme" class="form-label">Theme</label>
+            <select id="theme" class="form-select">
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+            </select>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="notifications" class="form-label">Notifications</label>
-          <select id="notifications" class="form-select">
-            <option value="on">On</option>
-            <option value="off">Off</option>
-          </select>
+        <div class="settings-section">
+          <h2 class="settings-title">Notifications</h2>
+          <div class="form-group">
+            <label for="notifications" class="form-label">Notification Status</label>
+            <select id="notifications" class="form-select">
+              <option value="on">On</option>
+              <option value="off">Off</option>
+            </select>
+          </div>
         </div>
-        <div class="form-actions">
-          <button type="submit" class="btn btn-primary">Save Settings</button>
+        <div class="action-buttons">
+          <button id="saveSettings" class="btn btn-primary">Save Settings</button>
         </div>
-      </form>
-    </div>
-    <div class="card">
-      <h2 class="card-title">Data</h2>
-      <button id="clearData" class="btn btn-danger">Clear All Data</button>
+      </div>
+      <div class="settings-card">
+        <div class="settings-section">
+          <h2 class="settings-title">Data Management</h2>
+          <button id="clearData" class="btn btn-danger">Clear All Data</button>
+        </div>
+      </div>
     </div>
   </main>
 
-  <!-- Add Habit Modal -->
-  <div class="modal-backdrop" id="addHabitModal">
+  <!-- Habit Modal (Add/Edit) -->
+  <div class="modal-backdrop" id="habitModal">
     <div class="modal">
       <div class="modal-header">
-        <h2 class="modal-title">Add New Habit</h2>
+        <h2 class="modal-title" id="modalTitle">Add New Habit</h2>
         <button class="modal-close" id="closeModal">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="18" y1="6" x2="6" y2="18"/>
             <line x1="6" y1="6" x2="18" y2="18"/>
           </svg>
@@ -713,9 +860,10 @@
             <option value="danger">Red</option>
           </select>
         </div>
+        <input type="hidden" id="habitId">
         <div class="form-actions">
-          <button type="button" class="btn btn-secondary" id="cancelAddHabit">Cancel</button>
-          <button type="submit" class="btn btn-primary">Create Habit</button>
+          <button type="button" class="btn btn-secondary" id="cancelHabit">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="submitHabit">Create Habit</button>
         </div>
       </form>
     </div>
@@ -724,8 +872,8 @@
   <script>
     // Habit data structure
     class Habit {
-      constructor(name, frequency, time, color) {
-        this.id = Date.now();
+      constructor(id, name, frequency, time, color) {
+        this.id = id || Date.now();
         this.name = name;
         this.frequency = frequency;
         this.time = time;
@@ -750,14 +898,16 @@
     const habitsGrid = document.getElementById('habitsGrid');
     const activityList = document.getElementById('activityList');
     const addHabitBtn = document.getElementById('addHabitBtn');
-    const addHabitModal = document.getElementById('addHabitModal');
+    const habitModal = document.getElementById('habitModal');
     const closeModal = document.getElementById('closeModal');
-    const cancelAddHabit = document.getElementById('cancelAddHabit');
+    const cancelHabit = document.getElementById('cancelHabit');
     const habitForm = document.getElementById('habitForm');
+    const modalTitle = document.getElementById('modalTitle');
+    const submitHabit = document.getElementById('submitHabit');
     const weeklyProgress = document.getElementById('weeklyProgress');
     const monthlyProgress = document.getElementById('monthlyProgress');
     const statsGrid = document.getElementById('statsGrid');
-    const settingsForm = document.getElementById('settingsForm');
+    const saveSettingsBtn = document.getElementById('saveSettings');
     const clearDataBtn = document.getElementById('clearData');
 
     // Helper functions
@@ -822,7 +972,7 @@
       const streak = calculateStreak(habit);
 
       return `
-        <div class="habit-card fade-in">
+        <div class="habit-card ${habit.color} fade-in">
           <div class="habit-header">
             <div class="habit-info">
               <h3 class="habit-name">${habit.name}</h3>
@@ -871,28 +1021,28 @@
     function renderHabits() {
       habitsGrid.innerHTML = habits.map(renderHabitCard).join('') + `
         <button class="add-habit fade-in" id="addHabitBtn" style="animation-delay: 0.3s">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="12" y1="5" x2="12" y2="19"/>
             <line x1="5" y1="12" x2="19" y2="12"/>
           </svg>
           Add Habit
         </button>
       `;
-      document.getElementById('addHabitBtn').addEventListener('click', showModal);
+      document.getElementById('addHabitBtn').addEventListener('click', showAddModal);
     }
 
     function renderActivity(activity) {
       return `
         <div class="activity-item">
           <div class="activity-icon" style="background-color: var(--${activity.type === 'completed' ? 'primary-light' : 'primary'});">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               ${activity.type === 'completed' ? 
                 '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>' : 
                 '<path d="M12 5v14"/><path d="M5 12h14"/>'}
             </svg>
           </div>
           <div class="activity-content">
-            <div class="activity-title">${activity.type === 'completed' ? 'Completed' : 'Created new habit'} "${activity.habit}"</div>
+            <div class="activity-title">${activity.type === 'completed' ? 'Completed' : 'Created'} "${activity.habit}"</div>
             <div class="activity-time">${new Date(activity.timestamp).toLocaleString()}</div>
           </div>
         </div>
@@ -907,9 +1057,9 @@
       const dashOffset = 440 - (440 * percentage) / 100;
       container.innerHTML = `
         <div class="progress-chart-container">
-          <svg width="160" height="160" class="progress-circle">
-            <circle cx="80" cy="80" r="70" class="progress-background"/>
-            <circle cx="80" cy="80" r="70" class="progress-value" stroke-dasharray="440" stroke-dashoffset="${dashOffset}"/>
+          <svg width="180" height="180" class="progress-circle">
+            <circle cx="90" cy="90" r="80" class="progress-background"/>
+            <circle cx="90" cy="90" r="80" class="progress-value" stroke-dasharray="502" stroke-dashoffset="${dashOffset}"/>
           </svg>
           <div class="progress-text">
             <div class="progress-percentage">${percentage}%</div>
@@ -948,30 +1098,72 @@
         const { successRate, totalDays } = calculateStats(habit);
         const streak = calculateStreak(habit);
         return `
-          <div class="stats-item">
-            <h3>${habit.name}</h3>
-            <p>Current Streak: ${streak} days</p>
-            <p>Total Completions: ${totalDays}</p>
-            <p>Success Rate: ${successRate}%</p>
-            <p>Frequency: ${habit.frequency}</p>
+          <div class="stats-card fade-in">
+            <div class="stats-header">
+              <h3 class="stats-title">${habit.name}</h3>
+              <span style="color: var(--${habit.color}); font-weight: 600;">${habit.frequency}</span>
+            </div>
+            <div class="stats-metric">
+              <div class="stats-icon" style="background: var(--${habit.color}-light);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="stats-value">${streak}</div>
+                <div class="stats-label">Current Streak</div>
+              </div>
+            </div>
+            <div class="stats-metric">
+              <div class="stats-icon" style="background: var(--${habit.color}-light);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+              </div>
+              <div>
+                <div class="stats-value">${totalDays}</div>
+                <div class="stats-label">Total Completions</div>
+              </div>
+            </div>
+            <div class="stats-metric">
+              <div class="stats-icon" style="background: var(--${habit.color}-light);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 20v-6M6 20V10M18 20V4"/>
+                </svg>
+              </div>
+              <div>
+                <div class="stats-value">${successRate}%</div>
+                <div class="stats-label">Success Rate</div>
+              </div>
+            </div>
           </div>
         `;
       }).join('');
     }
 
-    function renderSettings() {
-      document.getElementById('theme').value = settings.theme;
-      document.getElementById('notifications').value = settings.notifications;
+    // Event handlers
+    function showAddModal() {
+      modalTitle.textContent = 'Add New Habit';
+      submitHabit.textContent = 'Create Habit';
+      habitForm.reset();
+      document.getElementById('habitId').value = '';
+      habitModal.classList.add('active');
     }
 
-    // Event handlers
-    function showModal() {
-      addHabitModal.classList.add('active');
+    function showEditModal(habitId) {
+      const habit = habits.find(h => h.id === Number(habitId));
+      modalTitle.textContent = 'Edit Habit';
+      submitHabit.textContent = 'Save Changes';
+      document.getElementById('habitName').value = habit.name;
+      document.getElementById('habitFrequency').value = habit.frequency;
+      document.getElementById('habitTime').value = habit.time;
+      document.getElementById('habitColor').value = habit.color;
+      document.getElementById('habitId').value = habit.id;
+      habitModal.classList.add('active');
     }
 
     function hideModal() {
-      addHabitModal.classList.remove('active');
-      habitForm.reset();
+      habitModal.classList.remove('active');
     }
 
     function handleCheck(e) {
@@ -1029,12 +1221,17 @@
       if (!button) return;
 
       const habitId = button.dataset.id;
-      if (confirm('Delete this habit?')) {
+      const habit = habits.find(h => h.id === Number(habitId));
+      const action = prompt('Type "delete" to remove or "edit" to modify this habit:');
+      
+      if (action === 'delete' && confirm('Delete this habit?')) {
         habits = habits.filter(h => h.id !== Number(habitId));
         saveData();
         renderHabits();
         updateProgress();
         renderStats();
+      } else if (action === 'edit') {
+        showEditModal(habitId);
       }
     }
 
@@ -1045,7 +1242,6 @@
       document.querySelector(`[data-page="${pageName}"]`).classList.add('active');
 
       if (pageName === 'stats') renderStats();
-      if (pageName === 'settings') renderSettings();
     }
 
     // Event listeners
@@ -1056,11 +1252,11 @@
       });
     });
 
-    addHabitBtn.addEventListener('click', showModal);
+    addHabitBtn.addEventListener('click', showAddModal);
     closeModal.addEventListener('click', hideModal);
-    cancelAddHabit.addEventListener('click', hideModal);
-    addHabitModal.addEventListener('click', (e) => {
-      if (e.target === addHabitModal) hideModal();
+    cancelHabit.addEventListener('click', hideModal);
+    habitModal.addEventListener('click', (e) => {
+      if (e.target === habitModal) hideModal();
     });
 
     habitsGrid.addEventListener('click', (e) => {
@@ -1072,19 +1268,31 @@
     habitForm.addEventListener('submit', (e) => {
       e.preventDefault();
       
-      const newHabit = new Habit(
-        document.getElementById('habitName').value,
-        document.getElementById('habitFrequency').value,
-        document.getElementById('habitTime').value,
-        document.getElementById('habitColor').value
-      );
+      const habitId = document.getElementById('habitId').value;
+      const newHabitData = {
+        name: document.getElementById('habitName').value,
+        frequency: document.getElementById('habitFrequency').value,
+        time: document.getElementById('habitTime').value,
+        color: document.getElementById('habitColor').value
+      };
 
-      habits.push(newHabit);
-      activities.unshift({
-        type: 'created',
-        habit: newHabit.name,
-        timestamp: new Date()
-      });
+      if (habitId) {
+        // Edit existing habit
+        const habitIndex = habits.findIndex(h => h.id === Number(habitId));
+        habits[habitIndex] = {
+          ...habits[habitIndex],
+          ...newHabitData
+        };
+      } else {
+        // Add new habit
+        const newHabit = new Habit(null, newHabitData.name, newHabitData.frequency, newHabitData.time, newHabitData.color);
+        habits.push(newHabit);
+        activities.unshift({
+          type: 'completed',
+          habit: newHabit.name,
+          timestamp: new Date()
+        });
+      }
 
       saveData();
       renderHabits();
@@ -1094,7 +1302,7 @@
       hideModal();
     });
 
-    settingsForm.addEventListener('submit', (e) => {
+    saveSettingsBtn.addEventListener('click', (e) => {
       e.preventDefault();
       settings.theme = document.getElementById('theme').value;
       settings.notifications = document.getElementById('notifications').value;
@@ -1112,7 +1320,6 @@
         renderActivities();
         updateProgress();
         renderStats();
-        renderSettings();
       }
     });
 
@@ -1121,22 +1328,6 @@
     renderActivities();
     updateProgress();
     renderStats();
-    renderSettings();
-
-    // Add default habits if none exist
-    //if (!habits.length) {
-      //const defaultHabits = [
-       // new Habit('Morning Meditation', 'daily', '07:00', 'primary'),
-       // new Habit('Read 30 Minutes', 'daily', '21:00', 'primary'),
-       // new Habit('Exercise', 'daily', '18:00', 'primary')
-     // ];
-      habits = defaultHabits;
-      saveData();
-      renderHabits();
-      renderActivities();
-      updateProgress();
-      renderStats();
-    }
   </script>
 </body>
 </html>
